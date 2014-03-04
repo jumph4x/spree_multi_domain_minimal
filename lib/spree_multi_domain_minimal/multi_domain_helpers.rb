@@ -1,4 +1,4 @@
-module SpreeMultiDomain
+module SpreeMultiDomainMinimal
   module MultiDomainHelpers
     def self.included(receiver)
       receiver.send :helper, 'spree/products'
@@ -15,12 +15,6 @@ module SpreeMultiDomain
 
     def current_tracker
       @current_tracker ||= Spree::Tracker.current(request.env['SERVER_NAME'])
-    end
-
-    def get_taxonomies
-      @taxonomies ||= current_store.present? ? Spree::Taxonomy.where(["store_id = ?", current_store.id]) : Spree::Taxonomy
-      @taxonomies = @taxonomies.includes(:root => :children)
-      @taxonomies
     end
 
     def add_current_store_id_to_params

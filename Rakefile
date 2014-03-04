@@ -1,5 +1,5 @@
 # encoding: utf-8
-ENV['LIB_NAME'] = 'spree_multi_domain'
+ENV['LIB_NAME'] = 'spree_multi_domain_minimal'
 
 require 'rake'
 require 'rake/testtask'
@@ -12,7 +12,7 @@ RSpec::Core::RakeTask.new
 
 task :default => [:spec]
 
-spec = eval(File.read('spree_multi_domain.gemspec'))
+spec = eval(File.read('spree_multi_domain_minimal.gemspec'))
 
 Gem::PackageTask.new(spec) do |p|
   p.gem_spec = spec
@@ -27,6 +27,6 @@ end
 
 desc "Generates a dummy app for testing"
 task :test_app do
-  ENV['LIB_NAME'] = 'spree_multi_domain'
+  ENV['LIB_NAME'] = 'spree_multi_domain_minimal'
   Rake::Task['common:test_app'].invoke
 end

@@ -1,6 +1,6 @@
-module SpreeMultiDomain
+module SpreeMultiDomainMinimal
   class Engine < Rails::Engine
-    engine_name 'spree_multi_domain'
+    engine_name 'spree_multi_domain_minimal'
 
     config.autoload_paths += %W(#{config.root}/lib)
 
@@ -11,31 +11,10 @@ module SpreeMultiDomain
         end
       end
 
-      Spree::Config.searcher_class = Spree::Search::MultiDomain
       ApplicationController.send :include, SpreeMultiDomain::MultiDomainHelpers
     end
 
     config.to_prepare &method(:activate).to_proc
-
-    initializer "templates with dynamic layouts" do |app|
-      ActionView::TemplateRenderer.class_eval do
-        def find_layout_with_multi_store(layout, locals)
-          store_layout = layout
-
-          if @view.respond_to?(:current_store) && @view.current_store && !@view.controller.is_a?(Spree::Admin::BaseController)
-            store_layout = layout.call.gsub("layouts/", "layouts/#{@view.current_store.code}/")
-          end
-
-          begin
-            find_layout_without_multi_store(store_layout, locals)
-          rescue ::ActionView::MissingTemplate
-            find_layout_without_multi_store(layout, locals)
-          end
-        end
-
-        alias_method_chain :find_layout, :multi_store
-      end
-    end
 
     initializer "current order decoration" do |app|
       require 'spree/core/controller_helpers/order'
