@@ -1,6 +1,7 @@
 \#*
 **/*.db
 *~
+*.swp
 .#*
 .DS_Store
 .dotest
